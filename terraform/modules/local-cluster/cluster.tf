@@ -44,4 +44,16 @@ resource "kind_cluster" "main" {
   provisioner "local-exec" {
     command = "kubectl wait -n ingress-nginx --for=condition=ready --timeout=120s pod -l app.kubernetes.io/component=controller"
   }
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl wait --namespace metallb-system --for=condition=ready pod --selector=app=metallb --timeout=90s"
+  }
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f - <<EOF\napiVersion: metallb.io/v1beta1\nkind: IPAddressPool\nmetadata:\n  name: load-balancer-default-pool\n  namespace: metallb-system\nspec:\n  addresses:\n  - 172.25.255.200-172.25.255.250\n---\napiVersion: metallb.io/v1beta1\nkind: L2Advertisement\nmetadata:\n  name: empty\n  namespace: metallb-system\nEOF"
+  }
 }
