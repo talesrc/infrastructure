@@ -1,0 +1,15 @@
+apiVersion: v2
+name: gitea
+description: Helm chart for Gitea, a code repository tool.
+type: application
+version: 0.1.0
+appVersion: "1.21.0"
+maintainers:
+- email: tales.ribeirop@gmail.com
+  name: "talesrc"
+  url: https://github.com/talesrc
+dependencies:
+- name: gitea
+  version: 10.0.2
+  repository: https://dl.gitea.io/charts
+  alias: gitea

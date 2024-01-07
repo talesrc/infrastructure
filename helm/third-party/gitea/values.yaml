@@ -1,0 +1,24 @@
+gitea:
+  image:
+    rootless: true
+  redis-cluster:
+    enabled: true
+  postgresql:
+    enabled: true
+  postgresql-ha:
+    enabled: false
+
+  persistence:
+    enabled: false
+
+  ingress:
+    enabled: true
+    hosts:
+    - host: git.taleco.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+  service:
+    ssh:
+      type: LoadBalancer
