@@ -1,0 +1,10 @@
+argocd:
+  server:
+    ingress:
+      enabled: true
+      hosts:
+      - argocd.taleco.local
+    extraArgs:
+    - "--insecure"
+
+argocdApps:

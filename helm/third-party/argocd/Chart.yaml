@@ -1,0 +1,19 @@
+apiVersion: v2
+name: argocd
+description: Helm chart for ArgoCD, a gitops tool.
+type: application
+version: 0.1.0
+appVersion: "1.21.0"
+maintainers:
+- email: tales.ribeirop@gmail.com
+  name: "talesrc"
+  url: https://github.com/talesrc
+dependencies:
+- name: argo-cd
+  version: 5.52.1
+  repository: https://argoproj.github.io/argo-helm
+  alias: argocd
+- name: argocd-apps
+  version: 1.4.1
+  repository: https://argoproj.github.io/argo-helm
+  alias: argocdApps
