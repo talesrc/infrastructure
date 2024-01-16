@@ -1,0 +1,44 @@
+{{- range .Values.migrateRepositories }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ $.Release.Name }}-migrate-repository-{{ .mirroredRepositoryName }}
+spec:
+  template:
+    spec:
+      containers:
+      - name: migrator
+        image: curlimages/curl:8.5.0
+        command: ["/bin/sh", "-c", "/scripts/migrate.sh"]
+        env:
+        - name: "GITEA_URL"
+          value: "http://{{ $.Release.Name }}-http:{{ $.Values.gitea.service.http.port }}"
+        - name: "GITEA_USERNAME"
+          valueFrom:
+            secretKeyRef:
+              name: "taleco-gitea-credentials"
+              key: "username"
+        - name: "GITEA_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: "taleco-gitea-credentials"
+              key: "password"
+        - name: "ORIGIN_REPOSITORY_URL"
+          value: {{ .originRepositoryUrl | quote }}
+        - name: "HOSTED_ON"
+          value: {{ .hostedOn | quote }}
+        - name: "MIRRORED_REPOSITORY_NAME"
+          value: {{ .mirroredRepositoryName | quote }}
+        - name: "IS_MIRRORED_REPOSITORY_PRIVATE"
+          value: {{ .isMirroredRepositoryPrivate | quote}}
+        volumeMounts:
+        - name: migration-script
+          mountPath: /scripts
+      volumes:
+      - name: migration-script
+        configMap:
+          name: {{ $.Release.Name | trunc 37 }}-migrate-repository-script
+          defaultMode: 0777
+      restartPolicy: OnFailure
+  backoffLimit: 4
+{{- end }}

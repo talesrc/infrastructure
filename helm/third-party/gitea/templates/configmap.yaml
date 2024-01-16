@@ -1,0 +1,26 @@
+{{- if ne (len .Values.migrateRepositories) 0 }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name | trunc 37 }}-migrate-repository-script
+data:
+  migrate.sh: |
+    set -eux pipefail
+
+    echo "Requesting migration..."
+    curl -X POST -H "Content-Type: application/json" \
+    -u $GITEA_USERNAME:$GITEA_PASSWORD -so - \
+    -d '{
+        "repo_name": "'$MIRRORED_REPOSITORY_NAME'",
+        "clone_addr": "'$ORIGIN_REPOSITORY_URL'",
+        "issues": true,
+        "labels": true,
+        "mirror": true,
+        "mirror_interval": "10m",
+        "private": '$IS_MIRRORED_REPOSITORY_PRIVATE',
+        "pull_requests": true,
+        "releases": true,
+        "service": "'$HOSTED_ON'",
+        "wiki": true
+    }' $GITEA_URL/api/v1/repos/migrate
+{{- end }}  

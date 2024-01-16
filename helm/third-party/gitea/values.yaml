@@ -1,3 +1,9 @@
+migrateRepositories:
+- originRepositoryUrl: "https://github.com/talesrc/infrastructure-interview-challenge.git"
+  hostedOn: "github"
+  mirroredRepositoryName: "infrastructure-interview"
+  isMirroredRepositoryPrivate: "false"
+
 gitea:
   image:
     rootless: true
