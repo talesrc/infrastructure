@@ -11,6 +11,6 @@ provider "kind" {}
 
 provider "helm" {
   kubernetes {
-    config_path = "./infra-interview-cluster-dev-config"
+    config_path = "./local-cluster-config"
   }
 }
