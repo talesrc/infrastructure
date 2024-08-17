@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -13,7 +12,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_infra-interview-cluster"></a> [infra-interview-cluster](#module\_infra-interview-cluster) | ../../modules/local-cluster | n/a |
+| <a name="module_local-cluster"></a> [local-cluster](#module\_local-cluster) | ../../modules/local-cluster | n/a |
 
 ## Resources
 
@@ -26,4 +25,3 @@ No inputs.
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->

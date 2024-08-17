@@ -1,5 +1,5 @@
 resource "helm_release" "monitoring" {
-  count = var.install_monitoring ? 1 : 0
+  for_each = {for k, v in var.clusters : k => v if v.addons.monitoring_enabled}
   name  = "kube-prometheus"
 
   repository = "https://prometheus-community.github.io/helm-charts"

@@ -1,5 +1,5 @@
 resource "helm_release" "metrics_server" {
-  count = var.enable_hpa ? 1 : 0
+  for_each = {for k, v in var.clusters : k => v if v.addons.hpa_enabled}
   name  = "metrics-server"
 
   repository = "https://kubernetes-sigs.github.io/metrics-server"

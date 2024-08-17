@@ -1,0 +1,5 @@
+clusters:
+  local-cluster:
+    kubernetes_version: kindest/node:v1.27.1
+    number_of_master_nodes: 1
+    number_of_worker_nodes: 1

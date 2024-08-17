@@ -1,13 +1,14 @@
 resource "kind_cluster" "main" {
-  name       = var.cluster_name
-  node_image = var.node_image
+  for_each = {for k, v in var.clusters: k => v}
+  name       = each.key
+  node_image = each.value.kubernetes_version
 
   kind_config {
     kind        = "Cluster"
     api_version = "kind.x-k8s.io/v1alpha4"
 
     dynamic "node" {
-      for_each = range(var.number_of_master_nodes)
+      for_each = range(each.value.number_of_master_nodes)
       content {
         role = "control-plane"
         kubeadm_config_patches = [
@@ -26,7 +27,7 @@ resource "kind_cluster" "main" {
     }
 
     dynamic "node" {
-      for_each = range(var.number_of_worker_nodes)
+      for_each = range(each.value.number_of_worker_nodes)
       content {
         role = "worker"
       }

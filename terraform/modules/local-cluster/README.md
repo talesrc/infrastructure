@@ -1,4 +1,3 @@
-<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -29,14 +28,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Cluster name | `string` | n/a | yes |
-| <a name="input_enable_hpa"></a> [enable\_hpa](#input\_enable\_hpa) | Enable horizontal pod autoscale? | `string` | `false` | no |
-| <a name="input_install_monitoring"></a> [install\_monitoring](#input\_install\_monitoring) | Install monitoring stack? | `string` | `false` | no |
-| <a name="input_node_image"></a> [node\_image](#input\_node\_image) | Container image used as a kubernetes node | `string` | `"kindest/node:v1.27.1"` | no |
-| <a name="input_number_of_master_nodes"></a> [number\_of\_master\_nodes](#input\_number\_of\_master\_nodes) | Number of master nodes | `number` | `1` | no |
-| <a name="input_number_of_worker_nodes"></a> [number\_of\_worker\_nodes](#input\_number\_of\_worker\_nodes) | Number of worker nodes | `number` | `1` | no |
+| <a name="input_clusters"></a> [clusters](#input\_clusters) | n/a | <pre>map(object({<br>    kubernetes_version = string<br>    number_of_master_nodes = number<br>    number_of_worker_nodes = number<br>    addons = optional(object({<br>      monitoring_enabled = optional(bool)<br>      hpa_enabled = optional(bool)<br>    }), {<br>      monitoring_enabled = false<br>      hpa_enabled = true<br>    })<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
 No outputs.
-<!-- END_TF_DOCS -->
