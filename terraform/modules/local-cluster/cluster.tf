@@ -1,7 +1,7 @@
 resource "kind_cluster" "main" {
   for_each = {for k, v in var.clusters: k => v}
   name       = each.key
-  node_image = each.value.kubernetes_version
+  node_image = "kindest/node:${each.value.kubernetes_version}"
 
   kind_config {
     kind        = "Cluster"
