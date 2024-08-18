@@ -1,0 +1,50 @@
+{{- range $key, $value := .Values.repositoriesToMirror }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "gitea.jobs.mirrorRepository.name" (dict "repository" $key) }}
+  labels: {{- include "gitea.jobs.mirrorRepository.labels" (dict "repository" $key "context" $) | nindent 4 }}
+  annotations:
+    {{- include "gitea.jobs.mirrorRepository.annotations" $ | nindent 4}}
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: wait-for-gitea
+          image: busybox
+          {{- include "gitea.jobs.wait-for-gitea.command" $ | nindent 10 }}
+      containers:
+      - name: mirror-repository
+        image: curlimages/curl:8.9.1
+        command: 
+          - /bin/sh
+          - -c
+          - /scripts/{{ include "gitea.jobs.mirrorRepository.script.name" . }}
+        env:
+        - name: GITEA_URL
+          value: {{ include "gitea.localURL" $ }}
+        - name: GITEA_USERNAME
+          value: {{ $.Values.gitea.admin.username }}
+        - name: GITEA_PASSWORD
+          value: {{ $.Values.gitea.admin.password }}
+        - name: MIRRORED_REPOSITORY_NAME
+          value: {{ $key | quote }}
+        - name: MIRRORED_REPOSITORY_URL
+          value: {{ $value.mirroredRepositoryURL | quote }}
+        - name: HOSTED_ON
+          value: {{ $value.hostedOn | quote }}
+        - name: IS_PRIVATE
+          value: {{ $value.isPrivate | quote}}
+        volumeMounts:
+        - name: mirror-script
+          mountPath: /scripts
+      volumes:
+      - name: mirror-script
+        configMap:
+          name: {{ include "gitea.jobs.mirrorRepository.configmap.name" . }}
+          defaultMode: 0777
+      restartPolicy: OnFailure
+  backoffLimit: 4
+{{- end }}

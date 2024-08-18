@@ -1,10 +1,10 @@
-{{- if ne (len .Values.migrateRepositories) 0 }}
+{{- if .Values.repositoriesToMirror }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name | trunc 37 }}-migrate-repository-script
+  name: {{ include "gitea.jobs.mirrorRepository.configmap.name" . }}
 data:
-  migrate.sh: |
+  {{ include "gitea.jobs.mirrorRepository.script.name" . }}: |
     set -eux pipefail
 
     echo "Requesting migration..."
@@ -12,12 +12,12 @@ data:
     -u $GITEA_USERNAME:$GITEA_PASSWORD -so - \
     -d '{
         "repo_name": "'$MIRRORED_REPOSITORY_NAME'",
-        "clone_addr": "'$ORIGIN_REPOSITORY_URL'",
+        "clone_addr": "'$MIRRORED_REPOSITORY_URL'",
         "issues": true,
         "labels": true,
         "mirror": true,
         "mirror_interval": "10m",
-        "private": '$IS_MIRRORED_REPOSITORY_PRIVATE',
+        "private": '$IS_PRIVATE',
         "pull_requests": true,
         "releases": true,
         "service": "'$HOSTED_ON'",

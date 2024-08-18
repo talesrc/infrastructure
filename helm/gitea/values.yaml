@@ -1,8 +1,8 @@
-migrateRepositories:
-- originRepositoryUrl: "https://github.com/talesrc/infrastructure-interview-challenge.git"
-  hostedOn: "github"
-  mirroredRepositoryName: "infrastructure-interview"
-  isMirroredRepositoryPrivate: "false"
+repositoriesToMirror:
+  infrastructure-interview:
+    mirroredRepositoryURL: https://github.com/talesrc/infrastructure-interview-challenge.git
+    hostedOn: github
+    isPrivate: false
 
 gitea:
   image:
@@ -28,3 +28,14 @@ gitea:
   service:
     ssh:
       type: LoadBalancer
+
+  admin:
+    username: giteaAdmin
+    password: giteaAdmin
+    email: admin@gitea.com
+  
+  redis-cluster:
+    enabled: false
+  
+  redis:
+    enabled: true
