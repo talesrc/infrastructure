@@ -3,3 +3,6 @@ clusters:
     kubernetes_version: v1.31.0
     number_of_master_nodes: 1
     number_of_worker_nodes: 1
+    addons:
+      argocd:
+        control_plane: true

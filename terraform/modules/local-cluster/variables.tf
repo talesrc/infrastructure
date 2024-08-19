@@ -1,14 +1,15 @@
 variable "clusters" {
   type = map(object({
-    kubernetes_version = string
+    kubernetes_version     = string
     number_of_master_nodes = number
     number_of_worker_nodes = number
     addons = optional(object({
-      monitoring_enabled = optional(bool)
-      hpa_enabled = optional(bool)
-    }), {
-      monitoring_enabled = false
-      hpa_enabled = true
-    })
+      argocd = object({
+        control_plane = bool
+        join_cluster  = string
+      })
+      monitoring_enabled = optional(bool, false)
+      hpa_enabled        = optional(bool, true)
+    }))
   }))
 }

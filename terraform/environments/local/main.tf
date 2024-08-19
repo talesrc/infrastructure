@@ -1,6 +1,5 @@
 locals {
-  values   = yamldecode(file("./values.yaml"))
-  clusters = local.values.clusters
+  clusters   = yamldecode(file("${path.module}/values/clusters.yaml")).clusters
 }
 
 module "local-cluster" {
