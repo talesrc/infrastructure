@@ -1,10 +1,8 @@
 argocd:
+  global:
+    domain: argocd.taleco.local
   server:
     ingress:
       enabled: true
-      hosts:
-      - argocd.taleco.local
     extraArgs:
     - "--insecure"
-
-argocdApps:
