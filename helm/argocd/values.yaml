@@ -1,4 +1,4 @@
-argocd:
+argoCD:
   global:
     domain: argocd.taleco.local
   server:

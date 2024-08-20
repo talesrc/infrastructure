@@ -1,0 +1,27 @@
+argoCDApps:
+  applicationsets:
+    gitea:
+      generators:
+        - git:
+            repoURL: https://github.com/talesrc/infrastructure.git
+            revision: develop
+            directories:
+            - path: helm/gitea
+      template:
+        metadata:
+          name: gitea
+        spec:
+          project: default
+          source:
+            repoURL: https://github.com/talesrc/infrastructure.git
+            targetRevision: develop
+            path: helm/gitea
+          destination:
+            name: in-cluster
+            namespace: gitea
+          syncPolicy:
+            automated:
+              prune: false
+              selfHeal: false
+            syncOptions:
+              - CreateNamespace=true

@@ -1,0 +1,18 @@
+argoCDApps:
+  applications:
+    argocd-apps:
+      namespace: argocd
+      project: default
+      sources:
+        - repoURL: https://github.com/talesrc/infrastructure.git
+          path: helm/argocd-apps
+          targetRevision: develop
+      destination:
+        name: in-cluster
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: false
+        syncOptions:
+        - CreateNamespace=true
