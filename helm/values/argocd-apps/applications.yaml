@@ -6,7 +6,7 @@ argoCDApps:
             repoURL: https://github.com/talesrc/infrastructure.git
             revision: develop
             directories:
-            - path: helm/gitea
+            - path: helm/charts/gitea
       template:
         metadata:
           name: gitea
@@ -15,7 +15,7 @@ argoCDApps:
           source:
             repoURL: https://github.com/talesrc/infrastructure.git
             targetRevision: develop
-            path: helm/gitea
+            path: helm/charts/gitea
           destination:
             name: in-cluster
             namespace: gitea
