@@ -3,10 +3,14 @@ argoCDApps:
     argocd-apps:
       namespace: argocd
       project: default
-      sources:
-        - repoURL: https://github.com/talesrc/infrastructure.git
-          path: helm/argocd-apps
-          targetRevision: develop
+      source:
+        repoURL: https://github.com/talesrc/infrastructure.git
+        path: helm/charts/argocd-apps
+        targetRevision: develop
+        helm:
+          valueFiles:
+            - ../../values/argocd-apps/applications.yaml
+          ignoreMissingValueFiles: false
       destination:
         name: in-cluster
         namespace: argocd
